@@ -3,7 +3,8 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { LOGIN_PATH, safeRedirectPath } from "./redirect";
-import { fieldErrors, formValues, signInSchema, type FieldErrors } from "@/lib/validation/auth";
+import { signInSchema } from "@/lib/validation/auth";
+import { fieldErrors, formValues, type FieldErrors } from "@/lib/validation/form";
 
 export type SignInState = {
   errors?: FieldErrors;

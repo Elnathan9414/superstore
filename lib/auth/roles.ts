@@ -33,7 +33,8 @@ export type Section = {
 };
 
 const ALL: readonly Role[] = ROLES;
-const MANAGEMENT: readonly Role[] = ["owner", "manager"];
+export const MANAGEMENT_ROLES: readonly Role[] = ["owner", "manager"];
+const MANAGEMENT = MANAGEMENT_ROLES;
 
 // Order here is the order shown in the navigation.
 export const SECTIONS: readonly Section[] = [
@@ -64,7 +65,12 @@ export function sectionsFor(role: Role): Section[] {
 
 /** Only owners and managers may see purchase prices and margins. */
 export function canSeeCosts(role: Role): boolean {
-  return role === "owner" || role === "manager";
+  return MANAGEMENT_ROLES.includes(role);
+}
+
+/** Only owners and managers may change the catalog or the stock. */
+export function canManageStock(role: Role): boolean {
+  return MANAGEMENT_ROLES.includes(role);
 }
 
 /**

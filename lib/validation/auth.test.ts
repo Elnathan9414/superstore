@@ -1,12 +1,6 @@
 import { describe, expect, it } from "vitest";
-import {
-  createUserSchema,
-  fieldErrors,
-  formValues,
-  setActiveSchema,
-  signInSchema,
-  updateRoleSchema,
-} from "./auth";
+import { createUserSchema, setActiveSchema, signInSchema, updateRoleSchema } from "./auth";
+import { fieldErrors, formValues } from "./form";
 
 const UUID = "3f2b8c1e-7a4d-4e8b-9c1a-2b3c4d5e6f70";
 

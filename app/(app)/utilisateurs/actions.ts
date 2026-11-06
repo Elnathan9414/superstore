@@ -5,14 +5,8 @@ import type { PostgrestError } from "@supabase/supabase-js";
 import { requireRole } from "@/lib/auth/session";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-import {
-  createUserSchema,
-  fieldErrors,
-  formValues,
-  setActiveSchema,
-  updateRoleSchema,
-  type FieldErrors,
-} from "@/lib/validation/auth";
+import { createUserSchema, setActiveSchema, updateRoleSchema } from "@/lib/validation/auth";
+import { fieldErrors, formValues, type FieldErrors } from "@/lib/validation/form";
 
 const USERS_PATH = "/utilisateurs";
 // ~100 years: Supabase Auth has no "permanent" ban value.
