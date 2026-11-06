@@ -12,6 +12,7 @@ import {
   UserCog,
   Users,
   ClipboardList,
+  Settings,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -27,6 +28,7 @@ const ICONS: Record<SectionKey, LucideIcon> = {
   purchases: ClipboardList,
   reports: BarChart3,
   users: UserCog,
+  settings: Settings,
 };
 
 type NavLinksProps = {

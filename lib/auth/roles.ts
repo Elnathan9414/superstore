@@ -23,7 +23,8 @@ export type SectionKey =
   | "suppliers"
   | "purchases"
   | "reports"
-  | "users";
+  | "users"
+  | "settings";
 
 export type Section = {
   key: SectionKey;
@@ -47,6 +48,7 @@ export const SECTIONS: readonly Section[] = [
   { key: "purchases", label: "Achats", href: "/achats", roles: MANAGEMENT },
   { key: "reports", label: "Rapports", href: "/rapports", roles: MANAGEMENT },
   { key: "users", label: "Utilisateurs", href: "/utilisateurs", roles: ["owner"] },
+  { key: "settings", label: "Paramètres", href: "/parametres", roles: ["owner"] },
 ];
 
 export function getSection(key: SectionKey): Section {

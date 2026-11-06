@@ -33,11 +33,40 @@ const FUNCTION_ERRORS: Record<string, MappedError> = {
   },
   negative_stock: { field: "quantity", message: "Le stock ne peut pas devenir négatif." },
   reason_required: { field: "reason", message: "Le motif est obligatoire." },
+  empty_cart: { message: "Le panier est vide." },
+  duplicate_product: { message: "Un produit apparaît deux fois dans le panier." },
+  insufficient_stock: { message: "Stock insuffisant pour un article du panier." },
+  invalid_discount: { field: "discount", message: "Remise invalide." },
+  discount_too_high: { field: "discount", message: "Remise supérieure au plafond autorisé." },
+  total_mismatch: {
+    message: "Les prix ont changé depuis l'ouverture de la caisse. Vérifiez le nouveau total.",
+  },
+  invalid_payment: { field: "payments", message: "Paiement invalide." },
+  overpayment: {
+    field: "payments",
+    message: "Le montant payé dépasse le total. Enregistrez le montant dû, pas la somme remise.",
+  },
+  customer_required: {
+    field: "customer",
+    message: "Choisissez un client pour une vente non soldée (crédit).",
+  },
+  customer_not_found: { field: "customer", message: "Client introuvable." },
+  sale_not_found: { message: "Vente introuvable." },
+  already_cancelled: { message: "Cette vente est déjà annulée." },
   tracking_change_with_stock: {
     field: "tracksSerial",
     message: "Impossible de changer le suivi par numéro de série tant que le stock n'est pas à zéro.",
   },
 };
+
+// Codes whose `details` carries the product name
+const PRODUCT_DETAIL_CODES = new Set([
+  "insufficient_stock",
+  "product_inactive",
+  "serial_count_mismatch",
+  "serial_not_in_stock",
+  "serials_not_tracked",
+]);
 
 // Unique constraints -> field + message
 const UNIQUE_ERRORS: Record<string, MappedError> = {
@@ -61,7 +90,16 @@ export function mapDbError(error: DbError, fallback = "L'opération a échoué. 
         message: `Numéro(s) de série déjà enregistré(s) : ${error.details ?? ""}`.trim(),
       };
     }
-    if (known) return known;
+    if (known) {
+      // Name the product when the database tells us which one
+      if (error.details && PRODUCT_DETAIL_CODES.has(message)) {
+        return { ...known, message: `${known.message} (${error.details})` };
+      }
+      if (message === "discount_too_high" && error.details) {
+        return { ...known, message: `Remise supérieure au plafond autorisé (${error.details} %).` };
+      }
+      return known;
+    }
   }
 
   if (error.code === "23505") {

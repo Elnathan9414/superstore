@@ -1,8 +1,8 @@
 import "server-only";
-import { cache } from "react";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import { DEFAULT_CURRENCY, type Currency } from "@/lib/money";
+import type { Currency } from "@/lib/money";
+import { getShopSettings } from "./settings";
 import { MOVEMENT_TYPES, PRODUCT_CONDITIONS, type MovementType } from "@/lib/stock";
 import { cleanSearch, ilikeAny } from "@/lib/search";
 
@@ -13,15 +13,9 @@ export const PAGE_SIZE = 25;
 
 // ---------- Settings ----------
 
-export const getCurrency = cache(async (): Promise<Currency> => {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("shop_settings")
-    .select("currency_code, currency_decimals")
-    .maybeSingle();
-  if (!data) return DEFAULT_CURRENCY;
-  return { code: data.currency_code, decimals: data.currency_decimals };
-});
+export async function getCurrency(): Promise<Currency> {
+  return (await getShopSettings()).currency;
+}
 
 // ---------- Categories ----------
 

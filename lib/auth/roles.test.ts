@@ -21,6 +21,7 @@ describe("canAccess", () => {
     purchases: ["owner", "manager"],
     reports: ["owner", "manager"],
     users: ["owner"],
+    settings: ["owner"],
   };
 
   for (const [section, allowed] of Object.entries(expected)) {
@@ -41,12 +42,13 @@ describe("sectionsFor", () => {
     expect(sectionsFor("owner")).toHaveLength(SECTIONS.length);
   });
 
-  it("never shows sellers purchases, suppliers, reports or users", () => {
+  it("never shows sellers purchases, suppliers, reports, users or settings", () => {
     const keys = sectionsFor("seller").map((s) => s.key);
     expect(keys).not.toContain("purchases");
     expect(keys).not.toContain("suppliers");
     expect(keys).not.toContain("reports");
     expect(keys).not.toContain("users");
+    expect(keys).not.toContain("settings");
   });
 });
 
